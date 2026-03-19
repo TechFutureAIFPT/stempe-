@@ -44,7 +44,7 @@
     "vite": "^6.2.0"
   },
   "engines": {
-    "node": ">=20 <21"
+    "node": ">=24"
   },
   "packageManager": "npm@10.9.0",
   "overrides": {
