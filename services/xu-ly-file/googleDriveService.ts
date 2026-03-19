@@ -62,6 +62,25 @@ class GoogleDriveService {
    */
   public authenticate(): Promise<string> {
     return new Promise((resolve, reject) => {
+      // Check if we have a token in localStorage from the main login
+      if (!this.oauthToken) {
+        try {
+          const storedToken = localStorage.getItem('googleDriveToken');
+          if (storedToken) {
+            this.oauthToken = storedToken;
+            resolve(storedToken);
+            return;
+          }
+        } catch (e) {
+          console.error('Error reading googleDriveToken from localStorage', e);
+        }
+      }
+
+      if (this.oauthToken) {
+        resolve(this.oauthToken);
+        return;
+      }
+
       if (!window.google || !window.google.accounts || !window.google.accounts.oauth2) {
         reject(new Error('Google Identity Services script not loaded'));
         return;
@@ -75,17 +94,14 @@ class GoogleDriveService {
             reject(response);
           }
           this.oauthToken = response.access_token;
+          try {
+            localStorage.setItem('googleDriveToken', response.access_token);
+          } catch {}
           resolve(response.access_token);
         },
       });
 
-      if (this.oauthToken) {
-        // Skip if we already have a token (simple check)
-        // In a real app, we should check expiration
-        resolve(this.oauthToken);
-      } else {
-        tokenClient.requestAccessToken({ prompt: 'consent' });
-      }
+      tokenClient.requestAccessToken({ prompt: '' }); // Try without prompt first if possible
     });
   }
 

@@ -15,10 +15,19 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
   const handleGoogleSignIn = async () => {
     setError('');
     const provider = new GoogleAuthProvider();
+    provider.addScope('https://www.googleapis.com/auth/drive.readonly');
     try {
       const result = await signInWithPopup(auth, provider);
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential?.accessToken;
       const user = result.user;
-      try { localStorage.setItem('authEmail', user.email || ''); } catch {}
+      
+      try { 
+        localStorage.setItem('authEmail', user.email || ''); 
+        if (token) {
+          localStorage.setItem('googleDriveToken', token);
+        }
+      } catch {}
       setShowSuccess(true);
       setSuccessStage('celebrating');
       setTimeout(() => {
