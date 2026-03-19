@@ -1,0 +1,584 @@
+/* Chuẩn Hóa JD Component Styles */
+.chuan-hoa-jd-container {
+  --chj-primary-color: #3b82f6;
+  --chj-secondary-color: #1e2d3d;
+  --chj-text-color: #e5e7eb;
+  --chj-light-text-color: #ffffff;
+  --chj-border-color: rgba(59,130,246,0.1);
+  --chj-card-bg: linear-gradient(180deg, rgba(30,45,61,0.6), rgba(21,32,43,0.35));
+  --chj-card-solid: rgba(21,32,43,0.6);
+  --chj-success-color: #10b981;
+  --chj-success-bg: rgba(16,185,129,0.06);
+  --chj-warning-color: #f59e0b;
+  --chj-warning-bg: rgba(245,158,11,0.06);
+  --chj-error-color: #ef4444;
+  --chj-shadow: 0 12px 40px rgba(2,6,23,0.7);
+  --chj-input-bg: rgba(59,130,246,0.02);
+
+  font-family: 'Roboto', 'Inter', sans-serif;
+  color: var(--chj-text-color);
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-height: calc(100vh - 80px);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.chuan-hoa-jd-container .chj-main-content {
+  flex-grow: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding: 2rem;
+  width: 100%;
+}
+
+.chuan-hoa-jd-container .chj-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-width: 0;
+  flex-basis: 400px;
+}
+
+.chuan-hoa-jd-container .chj-card {
+  background: color-mix(in srgb, var(--chj-card-bg) 65%, rgba(3,6,10,0.2));
+  border-radius: 14px;
+  box-shadow: var(--chj-shadow);
+  padding: 1.5rem;
+  border: 1px solid rgba(255,255,255,0.04);
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(8px) saturate(140%);
+}
+
+.chuan-hoa-jd-container .chj-input-card {
+  flex-grow: 1;
+}
+
+.chuan-hoa-jd-container .chj-card h2 {
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  color: var(--chj-primary-color);
+  border-bottom: 2px solid var(--chj-border-color);
+  padding-bottom: 0.5rem;
+}
+
+.chuan-hoa-jd-container .chj-textarea-container {
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.chuan-hoa-jd-container textarea {
+  width: 100%;
+  height: 100%;
+  min-height: 150px;
+  flex-grow: 1;
+  border: 1px solid var(--chj-border-color);
+  background-color: var(--chj-input-bg);
+  color: var(--chj-text-color);
+  border-radius: 6px;
+  padding: 0.75rem;
+  font-family: inherit;
+  font-size: 1rem;
+  resize: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.chuan-hoa-jd-container textarea:focus {
+  outline: none;
+  border-color: var(--chj-primary-color);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--chj-primary-color) 20%, transparent);
+}
+
+.chuan-hoa-jd-container .chj-dropzone {
+  border: 2px dashed var(--chj-border-color);
+  border-radius: 6px;
+  padding: 1rem;
+  text-align: center;
+  color: #999;
+  cursor: pointer;
+  transition: border-color 0.3s, background-color 0.3s;
+  margin-bottom: 1rem;
+}
+
+.chuan-hoa-jd-container .chj-dropzone p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.chuan-hoa-jd-container .chj-dropzone.dragging {
+  border-color: var(--chj-primary-color);
+  background-color: color-mix(in srgb, var(--chj-primary-color) 10%, var(--chj-card-bg));
+}
+
+.chuan-hoa-jd-container .chj-file-list {
+  margin-top: 1rem;
+  max-height: 150px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.chuan-hoa-jd-container .chj-file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  padding: 0.5rem;
+  background-color: var(--chj-secondary-color);
+  border-radius: 4px;
+}
+
+.chuan-hoa-jd-container .chj-file-info {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.chuan-hoa-jd-container .chj-file-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+}
+
+.chuan-hoa-jd-container .chj-file-message {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.chuan-hoa-jd-container .chj-file-item .chj-status {
+  flex-shrink: 0;
+}
+
+.chuan-hoa-jd-container .chj-file-item .chj-status.success { color: var(--chj-success-color); }
+.chuan-hoa-jd-container .chj-file-item .chj-status.error { color: var(--chj-error-color); }
+
+.chuan-hoa-jd-container .chj-checkbox-container {
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.chuan-hoa-jd-container .chj-checkbox-container input {
+  margin-right: 0.5rem;
+}
+
+.chuan-hoa-jd-container .chj-toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 1rem 1.5rem;
+  border-radius: 6px;
+  color: white;
+  font-weight: 500;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  transform: translateX(120%);
+  transition: transform 0.5s ease-in-out;
+  z-index: 1000;
+}
+
+.chuan-hoa-jd-container .chj-toast.show {
+  transform: translateX(0);
+}
+
+.chuan-hoa-jd-container .chj-toast.success { background-color: var(--chj-success-color); }
+.chuan-hoa-jd-container .chj-toast.error { background-color: var(--chj-error-color); }
+
+.chuan-hoa-jd-container .chj-btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  background-color: var(--chj-primary-color);
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  position: relative;
+}
+
+.chuan-hoa-jd-container .chj-btn:hover {
+  background-color: color-mix(in srgb, var(--chj-primary-color) 85%, black);
+  transform: translateY(-2px);
+}
+
+.chuan-hoa-jd-container .chj-btn:disabled {
+  background-color: #a0b7d3;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.chuan-hoa-jd-container .chj-spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: chj-spin 1s ease-in-out infinite;
+}
+
+@keyframes chj-spin {
+  to { transform: rotate(360deg); }
+}
+
+.chuan-hoa-jd-container .chj-output-container {
+  background-color: var(--chj-card-bg);
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.chuan-hoa-jd-container .chj-output-container h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: var(--chj-primary-color);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  border-bottom: 2px solid var(--chj-border-color);
+  padding-bottom: 0.5rem;
+}
+
+.chuan-hoa-jd-container .chj-output-container h3:first-of-type {
+  margin-top: 0;
+}
+
+.chuan-hoa-jd-container .chj-output-container p,
+.chuan-hoa-jd-container .chj-output-container li {
+  margin-bottom: 0.5rem;
+}
+
+.chuan-hoa-jd-container .chj-output-container ul {
+  list-style-position: inside;
+  padding-left: 0.5rem;
+}
+
+.chuan-hoa-jd-container .chj-analysis-card {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border-radius: 6px;
+}
+
+.chuan-hoa-jd-container .chj-analysis-card.success {
+  background-color: var(--chj-success-bg);
+  border-left: 4px solid var(--chj-success-color);
+}
+
+.chuan-hoa-jd-container .chj-analysis-card.warning {
+  background-color: var(--chj-warning-bg);
+  border-left: 4px solid var(--chj-warning-color);
+}
+
+.chuan-hoa-jd-container .chj-analysis-card h4 {
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.chuan-hoa-jd-container .chj-analysis-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.chuan-hoa-jd-container .chj-analysis-card ul.chj-checklist {
+  list-style-type: none;
+  padding-left: 0;
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.chuan-hoa-jd-container .chj-analysis-card ul.chj-checklist li {
+  display: flex;
+  align-items: center;
+}
+
+.chuan-hoa-jd-container .chj-analysis-card ul.chj-checklist li .chj-check-icon {
+  margin-right: 0.5rem;
+  font-weight: bold;
+}
+
+.chuan-hoa-jd-container .chj-analysis-card ul.chj-checklist li.present {
+  color: var(--chj-success-color);
+}
+
+.chuan-hoa-jd-container .chj-analysis-card ul.chj-checklist li.missing {
+  color: var(--chj-warning-color);
+}
+
+.chuan-hoa-jd-container .chj-analysis-card.success h4 { color: var(--chj-success-color); }
+.chuan-hoa-jd-container .chj-analysis-card.warning h4 { color: var(--chj-warning-color); }
+
+.chuan-hoa-jd-container .chj-edit-jd-card {
+  background-color: color-mix(in srgb, var(--chj-secondary-color) 82%, rgba(0,0,0,0.2));
+  border: 1px solid rgba(255,255,255,0.03);
+  padding: 1.5rem;
+  border-radius: 10px;
+}
+
+.chuan-hoa-jd-container .chj-edit-jd-card h4 {
+  color: var(--chj-primary-color);
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--chj-border-color);
+  margin-bottom: 1.5rem;
+}
+
+.chuan-hoa-jd-container .chj-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.chuan-hoa-jd-container .chj-form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.chuan-hoa-jd-container .chj-form-section h5 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: -0.25rem;
+}
+
+.chuan-hoa-jd-container .chj-form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.chuan-hoa-jd-container .chj-form-group label {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.chuan-hoa-jd-container .chj-form-group label.required::after {
+  content: ' *';
+  color: var(--chj-error-color);
+}
+
+.chuan-hoa-jd-container .chj-form-group input,
+.chuan-hoa-jd-container .chj-form-group textarea,
+.chuan-hoa-jd-container .chj-form-group select {
+  width: 100%;
+  border: 1px solid var(--chj-border-color);
+  border-radius: 6px;
+  padding: 0.75rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  background-color: var(--chj-input-bg);
+  color: var(--chj-text-color);
+}
+
+.chuan-hoa-jd-container .chj-form-group select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--chj-text-color) 50%), linear-gradient(135deg, var(--chj-text-color) 50%, transparent 50%);
+  background-position: calc(100% - 18px) calc(1rem + 2px), calc(100% - 13px) calc(1rem + 2px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  padding-right: 2.25rem;
+  border-radius: 8px;
+  background-color: color-mix(in srgb, var(--chj-secondary-color) 70%, rgba(0,0,0,0.25));
+  border: 1px solid rgba(255,255,255,0.04);
+  color: var(--chj-text-color);
+}
+
+.chuan-hoa-jd-container .chj-form-group select:focus {
+  outline: none;
+  border-color: var(--chj-primary-color);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--chj-primary-color) 18%, transparent);
+  background-color: color-mix(in srgb, var(--chj-secondary-color) 60%, rgba(0,0,0,0.2));
+}
+
+.chuan-hoa-jd-container .chj-form-group select option {
+  background-color: color-mix(in srgb, var(--chj-secondary-color) 90%, rgba(2,6,10,0.6));
+  color: var(--chj-text-color);
+  padding: 0.25rem 0.5rem;
+}
+
+.chuan-hoa-jd-container .chj-form-group input:focus,
+.chuan-hoa-jd-container .chj-form-group textarea:focus,
+.chuan-hoa-jd-container .chj-form-group select:focus {
+  outline: none;
+  border-color: var(--chj-primary-color);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--chj-primary-color) 20%, transparent);
+}
+
+.chuan-hoa-jd-container .chj-edit-form .chj-btn {
+  align-self: flex-start;
+  margin-top: 0;
+}
+
+.chuan-hoa-jd-container .chj-step-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--chj-border-color);
+  padding-top: 1.5rem;
+}
+
+.chuan-hoa-jd-container .chj-export-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.chuan-hoa-jd-container .chj-export-buttons .chj-btn,
+.chuan-hoa-jd-container .chj-step-navigation .chj-btn {
+  margin-top: 0;
+}
+
+.chuan-hoa-jd-container .chj-btn-secondary {
+  background-color: #6c757d;
+}
+
+.chuan-hoa-jd-container .chj-btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+.chuan-hoa-jd-container .chj-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  color: #999;
+}
+
+.chuan-hoa-jd-container .chj-placeholder svg {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+/* Platform Standardizer Styles */
+.chuan-hoa-jd-container .chj-platform-standardizer-card {
+  margin-top: 0;
+}
+
+.chuan-hoa-jd-container .chj-platform-standardizer-content {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.chuan-hoa-jd-container .chj-platform-controls {
+  flex: 1;
+  min-width: 250px;
+  max-width: 400px;
+}
+
+.chuan-hoa-jd-container .chj-platform-controls .chj-form-group {
+  margin-bottom: 1.5rem;
+}
+
+.chuan-hoa-jd-container .chj-platform-controls .chj-analysis-card {
+  margin-bottom: 0;
+}
+
+.chuan-hoa-jd-container .chj-platform-preview-container {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.chuan-hoa-jd-container .chj-platform-preview-container label {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.chuan-hoa-jd-container .chj-platform-preview {
+  background-color: color-mix(in srgb, var(--chj-secondary-color) 80%, rgba(2,4,6,0.35));
+  border: 1px solid rgba(255,255,255,0.03);
+  border-radius: 10px;
+  padding: 1rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: monospace;
+  font-size: 0.9rem;
+  flex-grow: 1;
+  min-height: 300px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.chuan-hoa-jd-container .chj-platform-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.chuan-hoa-jd-container .chj-platform-actions .chj-btn {
+  margin-top: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .chuan-hoa-jd-container .chj-main-content {
+    flex-direction: column;
+  }
+  .chuan-hoa-jd-container .chj-panel {
+    min-height: auto;
+    flex-basis: auto;
+  }
+  .chuan-hoa-jd-container .chj-input-card {
+    flex-grow: 0;
+    height: auto;
+    min-height: 50vh;
+  }
+  .chuan-hoa-jd-container .chj-platform-standardizer-content {
+    flex-direction: column;
+  }
+  .chuan-hoa-jd-container .chj-platform-controls {
+    max-width: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .chuan-hoa-jd-container .chj-main-content {
+    padding: 1rem;
+    gap: 1rem;
+  }
+  .chuan-hoa-jd-container .chj-step-navigation {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  .chuan-hoa-jd-container .chj-step-navigation .chj-btn,
+  .chuan-hoa-jd-container .chj-export-buttons .chj-btn,
+  .chuan-hoa-jd-container .chj-platform-actions .chj-btn {
+    width: 100%;
+  }
+  .chuan-hoa-jd-container .chj-export-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+}

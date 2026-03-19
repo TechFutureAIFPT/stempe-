@@ -1,0 +1,23 @@
+{
+  "extends": "../config/tsconfig.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ES2022",
+    "moduleResolution": "Node",
+    "allowJs": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "types": ["node"],
+    "resolveJsonModule": true,
+    "noEmit": false,
+    "outDir": "../dist/tien-ich"
+  },
+  "include": [
+    "*.ts",
+    "*.js"
+  ],
+  "exclude": [
+    "../node_modules"
+  ]
+}
