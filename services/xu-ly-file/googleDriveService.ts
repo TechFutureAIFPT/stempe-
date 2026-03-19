@@ -29,7 +29,7 @@ class GoogleDriveService {
 
   constructor() {
     // Prioritize VITE_GOOGLE_PICKER_API_KEY, then VITE_GOOGLE_API_KEY, then Gemini key
-    this.developerKey = (import.meta as any).env?.VITE_GOOGLE_PICKER_API_KEY || (import.meta as any).env?.VITE_GOOGLE_API_KEY || (import.meta as any).env?.VITE_GEMINI_API_KEY_1 || '';
+    this.developerKey = (import.meta as any).env?.VITE_GOOGLE_PICKER_API_KEY || (import.meta as any).env?.VITE_GOOGLE_API_KEY || 'AIzaSyCPWn2rJAhB2v6ToC3d4h2rwhWoCSIVBt0';
   }
 
   /**
@@ -91,7 +91,9 @@ class GoogleDriveService {
         scope: 'https://www.googleapis.com/auth/drive.readonly',
         callback: (response: any) => {
           if (response.error !== undefined) {
+            console.error('Google OAuth Error:', response);
             reject(response);
+            return;
           }
           this.oauthToken = response.access_token;
           try {
@@ -101,7 +103,7 @@ class GoogleDriveService {
         },
       });
 
-      tokenClient.requestAccessToken({ prompt: '' }); // Try without prompt first if possible
+      tokenClient.requestAccessToken({ prompt: 'select_account' }); 
     });
   }
 
@@ -163,6 +165,12 @@ class GoogleDriveService {
         const picker = pickerBuilder.build();
         picker.setVisible(true);
       } catch (error) {
+        console.error('Picker Error:', error);
+        // If there's an auth error, clear the token so the next attempt prompts again
+        if (error && (error as any).status === 401) {
+          this.oauthToken = null;
+          try { localStorage.removeItem('googleDriveToken'); } catch {}
+        }
         reject(error);
       }
     });

@@ -97,33 +97,45 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
           </div>
         )}
 
-        {/* Main card */}
-        <div className={`backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl shadow-2xl p-8 max-w-md w-full transform transition-all duration-500 hover:scale-[1.02] ${successStage === 'celebrating' ? 'scale-105 shadow-green-500/20 border-green-400/30 animate-pulse' : ''}`} style={{ background: 'linear-gradient(145deg, rgba(17,24,39,0.6), rgba(11,18,30,0.5))' }}>
+        {/* Main card with high-end glassmorphism */}
+        <div className={`backdrop-blur-2xl bg-slate-900/40 border border-white/10 rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-10 max-w-md w-full transform transition-all duration-700 hover:scale-[1.01] relative overflow-hidden ${successStage === 'celebrating' ? 'scale-105 shadow-emerald-500/20 border-emerald-400/30' : ''}`}>
+          {/* Subtle inner glow */}
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+          
           {/* Logo/Brand Section */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-24 h-24 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 shadow-lg mb-4 transform hover:scale-110 transition-transform duration-300 overflow-hidden p-2">
+          <div className="text-center mb-10 relative">
+            <div className="inline-flex items-center justify-center w-28 h-28 rounded-3xl bg-gradient-to-br from-cyan-500/20 to-blue-600/20 backdrop-blur-md border border-white/10 shadow-2xl mb-6 transform hover:rotate-3 transition-transform duration-500 overflow-hidden p-3 group/logo">
+              <div className="absolute inset-0 bg-gradient-to-tr from-cyan-400/10 to-transparent opacity-0 group-hover/logo:opacity-100 transition-opacity"></div>
               <img
                 src="/images/logos/logo.jpg"
                 alt="Support HR Logo"
-                className="w-full h-full object-contain"
+                className="w-full h-full object-contain drop-shadow-2xl"
               />
             </div>
-            <h1 className="text-3xl font-bold text-white mb-2">
-              Chào mừng đến với Support HR
+            <h1 className="text-4xl font-extrabold text-white mb-3 tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400">
+              Support HR
             </h1>
-            <p className="text-slate-400 text-base">
-              Hệ thống tuyển dụng thông minh với AI
+            <p className="text-slate-400 text-lg font-light leading-relaxed">
+              Giải pháp tuyển dụng <span className="text-cyan-400 font-medium">AI</span> tương lai
             </p>
           </div>
 
-          {/* Google Sign In Button */}
-          <div className="space-y-4">
+          {/* Social Proof / Trust Line */}
+          <div className="flex items-center justify-center gap-4 mb-8 opacity-60">
+            <div className="h-px w-8 bg-slate-700"></div>
+            <span className="text-[10px] text-slate-500 uppercase tracking-widest font-medium">Thành viên hệ sinh thái TechFuture</span>
+            <div className="h-px w-8 bg-slate-700"></div>
+          </div>
+
+          {/* Google Sign In Button - Premium Style */}
+          <div className="space-y-6">
             <button
               type="button"
               onClick={handleGoogleSignIn}
-              className="w-full flex justify-center items-center py-4 px-6 border border-white/20 rounded-xl shadow-lg text-base font-semibold text-white bg-white/5 hover:bg-white/10 hover:border-white/30 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transform transition-all duration-200 hover:scale-[1.02] backdrop-blur-sm group"
+              className="w-full flex justify-center items-center py-4.5 px-6 rounded-2xl shadow-xl text-lg font-semibold text-white bg-gradient-to-r from-slate-800 to-slate-900 border border-white/10 hover:border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-cyan-500/10 backdrop-blur-sm group relative overflow-hidden"
             >
-              <svg className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform duration-200" viewBox="0 0 24 24">
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <svg className="w-6 h-6 mr-4 group-hover:scale-110 transition-transform duration-300" viewBox="0 0 24 24">
                 <path fill="#EA4335" d="M5.26620003,9.76452941 C6.19878754,6.93863203 8.85444915,4.90909091 12,4.90909091 C13.6909091,4.90909091 15.2181818,5.50909091 16.4181818,6.49090909 L19.9090909,3 C17.7818182,1.14545455 15.0545455,0 12,0 C7.27006974,0 3.1977497,2.69829785 1.23999023,6.65002441 L5.26620003,9.76452941 Z"/>
                 <path fill="#34A853" d="M16.0407269,18.0125889 C14.9509167,18.7163016 13.5660892,19.0909091 12,19.0909091 C8.86648613,19.0909091 6.21911939,17.076871 5.27698177,14.2678769 L1.23746264,17.3349879 C3.19279051,21.2936293 7.26500293,24 12,24 C14.9328362,24 17.7353462,22.9573905 19.834192,20.9995801 L16.0407269,18.0125889 Z"/>
                 <path fill="#4A90E2" d="M19.834192,20.9995801 C22.0291676,18.9520994 23.4545455,15.903663 23.4545455,12 C23.4545455,11.2909091 23.3454545,10.5818182 23.1818182,9.90909091 L12,9.90909091 L12,14.4545455 L18.4363636,14.4545455 C18.1187732,16.013626 17.2662994,17.2212117 16.0407269,18.0125889 L19.834192,20.9995801 Z"/>
@@ -132,19 +144,15 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
               Đăng nhập với Google
             </button>
             
-            <div className="text-center pt-2">
-              <p className="text-slate-500 text-xs">
-                Bằng cách đăng nhập, bạn đồng ý với điều khoản sử dụng
-              </p>
-            </div>
+            <p className="text-center text-slate-500 text-xs mt-6 leading-relaxed">
+              Bằng cách tiếp tục, bạn đồng ý với <a href="#" className="underline decoration-slate-600 hover:text-slate-300">Điều khoản dịch vụ</a> và <a href="#" className="underline decoration-slate-600 hover:text-slate-300">Chính sách bảo mật</a> của chúng tôi.
+            </p>
           </div>
         </div>
 
-        {/* Footer */}
-        <div className="text-center mt-6">
-          <p className="text-slate-500 text-xs">
-            © 2025 Support HR - Hệ thống tuyển dụng AI
-          </p>
+        {/* Footer info */}
+        <div className="mt-12 text-slate-600 text-[10px] uppercase tracking-widest font-medium">
+          © 2025 SUPPORT HR • POWERED BY TECHFUTURE AI
         </div>
       </div>
     </div>

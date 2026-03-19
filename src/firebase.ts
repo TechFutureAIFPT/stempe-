@@ -5,7 +5,7 @@ import { getFirestore } from 'firebase/firestore';
 import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
 const firebaseConfig = {
   apiKey: "AIzaSyCddND9ciUpeL3xTpWTUMyQ0TG9FyUCdiU",
-  authDomain: "www.supporthr-tf.com.vn",
+  authDomain: "gen-lang-client-0595612537.firebaseapp.com",
   databaseURL: "https://gen-lang-client-0595612537-default-rtdb.firebaseio.com",
   projectId: "gen-lang-client-0595612537",
   storageBucket: "gen-lang-client-0595612537.firebasestorage.app",

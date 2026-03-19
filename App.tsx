@@ -227,10 +227,22 @@ const MainLayout = ({ onResetRequest, className, isLoggedIn, onLoginRequest, cur
   }, [currentUser, userEmail]);
   const location = useLocation();
   const navigate = useNavigate();
-  const handleLogout = useCallback(() => {
-    try { localStorage.removeItem('authEmail'); } catch {}
-    window.location.reload();
-  }, []);
+  const handleLogout = useCallback(async () => {
+    try {
+      await auth.signOut();
+      localStorage.removeItem('authEmail');
+      localStorage.removeItem('googleDriveToken');
+      // Navigate to home before potentially reloading or just let auth state handle it
+      navigate('/');
+      // Instead of reload, we can let onAuthStateChanged handle the UI update
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Fallback
+      localStorage.removeItem('authEmail');
+      localStorage.removeItem('googleDriveToken');
+      window.location.href = '/';
+    }
+  }, [navigate]);
 
   const toggleSidebar = useCallback(() => {
     setSidebarOpen(prev => {
