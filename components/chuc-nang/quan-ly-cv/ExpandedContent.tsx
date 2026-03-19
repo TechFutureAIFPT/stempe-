@@ -34,10 +34,6 @@ const CriterionAccordion: React.FC<CriterionAccordionProps> = ({ item, isExpande
     const score = parseFloat(scoreMatch?.[1] || '0');
     const maxScore = parseFloat(scoreMatch?.[2] || '0');
 
-    // Debug: log the actual formula format
-    console.log('Formula from AI:', item['Công thức']);
-    console.log('Score format:', item['Điểm']);
-
     // Try new format first: "subscore X/Y% = X points"
     let formulaMatch = item['Công thức'].match(/subscore ([\d.]+)\/([\d.]+)% = ([\d.]+) points/);
     let subscore = parseFloat(formulaMatch?.[1] || '0');
@@ -61,8 +57,6 @@ const CriterionAccordion: React.FC<CriterionAccordionProps> = ({ item, isExpande
         formulaResult = subscore.toString();
       }
     }
-
-    console.log('Parsed data:', { score, maxScore, subscore, weight, formulaResult });
 
     return { score, maxScore, subscore, weight, formulaResult };
   }, [item]);
@@ -184,22 +178,22 @@ const CriterionAccordion: React.FC<CriterionAccordionProps> = ({ item, isExpande
   }
 
   return (
-    <div className="bg-slate-800/50 rounded-2xl border border-slate-700/80 shadow-sm transition-all duration-200 hover:shadow-lg hover:border-blue-600/60">
-      <button className="w-full flex items-center justify-between p-4 h-[64px] text-left" onClick={onToggle} aria-expanded={isExpanded}>
+    <div className="bg-slate-800/40 rounded-xl border border-slate-700/70 shadow-sm transition-all duration-200 hover:border-cyan-500/40">
+      <button className="w-full flex items-center justify-between p-3.5 min-h-[60px] text-left" onClick={onToggle} aria-expanded={isExpanded}>
         <div className="flex items-center gap-3 min-w-0">
           <i className={`${meta.icon} ${meta.color} w-5 text-center text-lg`}></i>
           <span className="font-semibold text-slate-200 truncate">{item['Tiêu chí']}</span>
           <span className="ml-2 px-2 py-0.5 rounded text-[10px] tracking-wide font-semibold bg-slate-700/70 text-slate-300 border border-slate-600">{proficiency}</span>
         </div>
         <div className="flex items-center gap-3">
-          <span className={`text-base font-bold px-3 py-1.5 rounded-lg text-white ${scoreColorClasses.replace(/text-\w+-\d+/, '').replace('border-transparent', '')}`}>
+          <span className={`text-sm font-bold px-3 py-1.5 rounded-lg text-white ${scoreColorClasses.replace(/text-\w+-\d+/, '').replace('border-transparent', '')}`}>
             {parsedData.score}<span className="text-xs text-slate-400">/{parsedData.maxScore}</span>
           </span>
           <i className={`fa-solid fa-chevron-down text-slate-400 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}></i>
         </div>
       </button>
       {isExpanded && (
-        <div className="px-4 pb-4 pt-2 border-t border-slate-700/50">
+        <div className="px-4 pb-4 pt-3 border-t border-slate-700/50">
           <div className={`grid grid-cols-1 ${isExperience ? 'xl:grid-cols-3' : 'xl:grid-cols-3'} gap-4`}>
             {/* Evidence always first */}
             <div className="bg-slate-900/70 p-5 rounded-xl">
@@ -372,36 +366,46 @@ const ExpandedContent: React.FC<ExpandedContentProps> = ({ candidate, expandedCr
   const stability = '±0.0'; // placeholder (extend with history later)
 
   return (
-    <div className="p-4 md:p-6 space-y-6">
-      <div className="bg-slate-800/60 border border-slate-700/70 rounded-xl p-5 flex flex-col md:flex-row gap-6">
-        <div className="flex-1 space-y-3">
+    <div className="p-4 md:p-6 space-y-5">
+      <div className="bg-slate-800/55 border border-slate-700/70 rounded-xl p-5">
+        <div className="flex items-start justify-between gap-4 flex-col md:flex-row">
           <h4 className="text-lg font-semibold text-slate-100 flex items-center gap-2">
-            <i className="fa-solid fa-chart-pie text-cyan-400" />Tổng hợp đánh giá
+            <i className="fa-solid fa-chart-pie text-cyan-400" />
+            Tổng hợp đánh giá
           </h4>
-          <p className="text-sm text-slate-400 leading-relaxed">
-            Ứng viên đạt <span className="font-semibold text-slate-200">{totalScore}/{maxTheoretical}</span> điểm – Mức phù hợp tổng thể: <span className="font-semibold text-cyan-400">{matchPercent}%</span>. Độ ổn định điểm: <span className="text-slate-300 font-medium">{stability}</span>
-          </p>
-          <div className="h-2 w-full bg-slate-700/50 rounded overflow-hidden">
-            <div className={`${matchPercent>=75?'bg-emerald-500':matchPercent>=55?'bg-yellow-500':'bg-red-500'} h-full`} style={{width: `${matchPercent}%`}} />
-          </div>
-          <p className="text-sm text-slate-300 font-medium">Nhận định: <span className="text-slate-200 font-normal">{recommendation}</span></p>
-        </div>
-        <div className="w-full md:w-60 bg-slate-900/60 rounded-lg p-4 border border-slate-700/70 flex flex-col gap-3 text-xs">
-          <div className="flex items-center justify-between text-slate-400"><span>Điểm</span><span className="font-mono text-slate-200">{totalScore}</span></div>
-            <div className="flex items-center justify-between text-slate-400"><span>Phù hợp JD</span><span className="font-mono text-cyan-400">{matchPercent}%</span></div>
-            <div className="flex items-center justify-between text-slate-400"><span>Ổn định</span><span className="font-mono text-slate-300">{stability}</span></div>
-            <div className="pt-1 border-t border-slate-700/50 text-slate-500 leading-relaxed">
-              Hiển thị trên thang chuẩn hóa 80 điểm (8 nhóm). Dùng cho đánh giá định hướng.
+          <div className="grid grid-cols-3 gap-2 w-full md:w-auto">
+            <div className="rounded-lg border border-slate-700 bg-slate-900/60 px-3 py-2 text-xs">
+              <div className="text-slate-400">Điểm</div>
+              <div className="text-slate-100 font-semibold">{totalScore}/{maxTheoretical}</div>
             </div>
+            <div className="rounded-lg border border-slate-700 bg-slate-900/60 px-3 py-2 text-xs">
+              <div className="text-slate-400">Phù hợp JD</div>
+              <div className="text-cyan-400 font-semibold">{matchPercent}%</div>
+            </div>
+            <div className="rounded-lg border border-slate-700 bg-slate-900/60 px-3 py-2 text-xs">
+              <div className="text-slate-400">Ổn định</div>
+              <div className="text-slate-200 font-semibold">{stability}</div>
+            </div>
+          </div>
+        </div>
+        <p className="mt-3 text-sm text-slate-300 leading-relaxed">
+          Ứng viên đạt <span className="font-semibold text-slate-100">{totalScore}/{maxTheoretical}</span> điểm.
+        </p>
+        <div className="mt-2 h-2 w-full bg-slate-700/50 rounded overflow-hidden">
+          <div className={`${matchPercent>=75?'bg-emerald-500':matchPercent>=55?'bg-yellow-500':'bg-red-500'} h-full`} style={{width: `${matchPercent}%`}} />
+        </div>
+        <div className="mt-3 rounded-lg border border-slate-700/60 bg-slate-900/55 px-4 py-3 text-sm">
+          <span className="font-semibold text-slate-100">Nhận định:</span>{' '}
+          <span className="text-slate-300">{recommendation}</span>
         </div>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {candidate.analysis?.['Điểm mạnh CV'] && (
-          <div className="p-4 bg-green-900/30 border border-green-500/30 rounded-xl">
+          <div className="p-4 bg-emerald-900/20 border border-emerald-500/25 rounded-xl">
             <p className="font-semibold text-green-300 mb-2 flex items-center gap-2 text-base">
               <i className="fa-solid fa-wand-magic-sparkles"></i>Điểm mạnh CV
             </p>
-            <ul className="list-disc list-inside text-sm text-green-400/90 space-y-1.5 pl-2">
+            <ul className="list-disc list-inside text-sm text-green-300/90 space-y-1.5 pl-2 leading-relaxed">
               {candidate.analysis['Điểm mạnh CV'].map((item, idx) => (
                 <li key={idx}>{item}</li>
               ))}
@@ -409,11 +413,11 @@ const ExpandedContent: React.FC<ExpandedContentProps> = ({ candidate, expandedCr
           </div>
         )}
         {candidate.analysis?.['Điểm yếu CV'] && (
-          <div className="p-4 bg-red-900/30 border border-red-500/30 rounded-xl">
+          <div className="p-4 bg-rose-900/20 border border-rose-500/25 rounded-xl">
             <p className="font-semibold text-red-300 mb-2 flex items-center gap-2 text-base">
               <i className="fa-solid fa-flag"></i>Điểm yếu CV
             </p>
-            <ul className="list-disc list-inside text-sm text-red-400/90 space-y-1.5 pl-2">
+            <ul className="list-disc list-inside text-sm text-red-300/90 space-y-1.5 pl-2 leading-relaxed">
               {candidate.analysis['Điểm yếu CV'].map((item, idx) => (
                 <li key={idx}>{item}</li>
               ))}
@@ -424,7 +428,7 @@ const ExpandedContent: React.FC<ExpandedContentProps> = ({ candidate, expandedCr
 
       {/* Education Validation Section */}
       {candidate.analysis?.educationValidation && (
-        <div className="bg-slate-800/50 border border-slate-700/80 rounded-xl p-4">
+        <div className="bg-slate-800/45 border border-slate-700/80 rounded-xl p-4">
           <h4 className="text-lg font-bold text-slate-100 mb-4 flex items-center gap-2">
             <i className="fa-solid fa-graduation-cap text-blue-400"></i>
             Xác thực thông tin học vấn
@@ -432,7 +436,7 @@ const ExpandedContent: React.FC<ExpandedContentProps> = ({ candidate, expandedCr
 
           <div className="space-y-4">
             {/* Standardized Education Info */}
-            <div className="bg-slate-900/70 p-3 rounded-lg">
+            <div className="bg-slate-900/70 p-3 rounded-lg border border-slate-700/60">
               <div className="flex items-center justify-between mb-2">
                 <h5 className="text-sm font-semibold text-slate-300">Thông tin học vấn chuẩn hóa</h5>
                 <span className={`px-2 py-1 rounded text-xs font-semibold ${
@@ -450,7 +454,7 @@ const ExpandedContent: React.FC<ExpandedContentProps> = ({ candidate, expandedCr
 
             {/* Validation Warnings */}
             {candidate.analysis.educationValidation.warnings && candidate.analysis.educationValidation.warnings.length > 0 && (
-              <div className="bg-yellow-900/30 border border-yellow-500/30 p-3 rounded-lg">
+              <div className="bg-yellow-900/20 border border-yellow-500/25 p-3 rounded-lg">
                 <h5 className="text-sm font-semibold text-yellow-300 mb-2 flex items-center gap-2">
                   <i className="fa-solid fa-triangle-exclamation"></i>
                   Cảnh báo xác thực

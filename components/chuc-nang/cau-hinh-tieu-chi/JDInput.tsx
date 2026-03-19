@@ -27,6 +27,7 @@ const JDInput: React.FC<JDInputProps> = ({ jdText, setJdText, jobPosition, setJo
   const [summarizeError, setSummarizeError] = useState('');
   const [showUploadOptions, setShowUploadOptions] = useState(false);
   const [showEditor, setShowEditor] = useState(() => jdText.length > 0);
+  const isJdBusy = isOcrLoading || isSummarizing;
 
   const getFriendlyErrorMessage = (error: unknown, context: 'ocr' | 'summarize'): string => {
     console.error(`Lỗi trong quá trình ${context}:`, error); // Log the original error for debugging
@@ -301,13 +302,17 @@ const JDInput: React.FC<JDInputProps> = ({ jdText, setJdText, jobPosition, setJo
                  {/* AI info removed to save space */}
 
 
-                 {(isOcrLoading || isSummarizing) && (
-                     <div className="absolute top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-cyan-500/25 bg-[#0B1120]/92 px-8 py-6 shadow-2xl backdrop-blur-md">
-                        <div className="flex flex-col items-center gap-3 text-center">
-                          <div className="h-10 w-10 rounded-full border-4 border-slate-700 border-t-cyan-400 animate-spin" />
-                          <span className="text-sm font-semibold text-slate-200">{ocrMessage || 'Đang xử lý...'}</span>
-                        </div>
+                 {isJdBusy && (
+                   <div className="absolute inset-0 z-50 flex items-center justify-center">
+                     <div className="rounded-2xl border border-cyan-500/25 bg-[#0B1120]/94 px-8 py-6 shadow-2xl backdrop-blur-md">
+                       <div className="flex flex-col items-center gap-3 text-center">
+                         <div className="h-10 w-10 rounded-full border-4 border-slate-700 border-t-cyan-400 animate-spin" />
+                         <span className="text-sm font-semibold text-slate-200">
+                           {ocrMessage || 'Đang xử lý JD...'}
+                         </span>
+                       </div>
                      </div>
+                   </div>
                  )}
                  
                  {(ocrError || summarizeError) && (
@@ -366,17 +371,23 @@ const JDInput: React.FC<JDInputProps> = ({ jdText, setJdText, jobPosition, setJo
                          spellCheck={false}
                      ></textarea>
                      
-                     {isSummarizing && (
-                         <div className="absolute top-6 right-6 flex items-center gap-2 rounded-xl border border-cyan-500/25 bg-[#0F172A] px-4 py-2 text-slate-200 shadow-2xl">
-                             <div className="h-4 w-4 rounded-full border-2 border-slate-600 border-t-cyan-400 animate-spin" />
-                             <span className="text-xs font-semibold tracking-wide">ĐANG TỐI ƯU JD...</span>
+                     {isJdBusy && (
+                       <div className="absolute inset-0 z-40 flex items-center justify-center rounded-lg bg-[#020617]/45">
+                         <div className="rounded-2xl border border-cyan-500/25 bg-[#0B1120]/94 px-8 py-6 shadow-2xl backdrop-blur-md">
+                           <div className="flex flex-col items-center gap-3 text-center">
+                             <div className="h-10 w-10 rounded-full border-4 border-slate-700 border-t-cyan-400 animate-spin" />
+                             <span className="text-sm font-semibold text-slate-200">
+                               {ocrMessage || 'Đang cấu trúc JD...'}
+                             </span>
+                           </div>
                          </div>
+                       </div>
                      )}
                      <div className="absolute top-6 right-6 text-[10px] uppercase tracking-widest font-bold text-slate-600/50 pointer-events-none">
-                         {characterCount > 0 && !isSummarizing ? `${characterCount} CHARS` : ''}
+                         {characterCount > 0 && !isJdBusy ? `${characterCount} CHARS` : ''}
                      </div>
 
-                     {(ocrMessage && !isOcrLoading && !isSummarizing) && (
+                     {(ocrMessage && !isJdBusy) && (
                          <div className="absolute bottom-8 left-8 flex items-center gap-2 text-cyan-400 bg-[#0F172A] px-4 py-2 rounded-xl border border-cyan-500/30 shadow-2xl animate-in fade-in slide-in-from-bottom-2">
                              <i className="fa-solid fa-circle-check"></i>
                              <span className="text-sm font-medium">{ocrMessage}</span>
