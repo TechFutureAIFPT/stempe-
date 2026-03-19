@@ -9,6 +9,8 @@ import { computeIndustrySimilarity, type IndustryEmbeddingInsight, type Supporte
 // Lazily initialize the AI client to allow the app to load even if the API key is not immediately available.
 let ai: GoogleGenAI | null = null;
 let currentKeyIndex = 0;
+const OPENAI_API_KEY = (import.meta as any).env?.VITE_OPENAI_API_KEY;
+const OPENAI_MODEL = (import.meta as any).env?.VITE_OPENAI_MODEL || 'gpt-4o-mini';
 const apiKeys = [
   (import.meta as any).env?.VITE_GEMINI_API_KEY_1,
   (import.meta as any).env?.VITE_GEMINI_API_KEY_2,
@@ -93,6 +95,112 @@ function switchToNextKey() {
   ai = null; // Reset to force re-init with new key
 }
 
+const normalizeSchemaForOpenAI = (schema: any): any => {
+  if (schema == null) return schema;
+  if (Array.isArray(schema)) return schema.map(normalizeSchemaForOpenAI);
+  if (typeof schema !== 'object') return schema;
+
+  const typeMap: Record<string, string> = {
+    OBJECT: 'object',
+    ARRAY: 'array',
+    STRING: 'string',
+    NUMBER: 'number',
+    INTEGER: 'integer',
+    BOOLEAN: 'boolean',
+    NULL: 'null',
+  };
+
+  const normalized: any = {};
+  for (const [key, value] of Object.entries(schema)) {
+    if (key === 'type' && typeof value === 'string') {
+      normalized[key] = typeMap[value] || value.toLowerCase();
+    } else {
+      normalized[key] = normalizeSchemaForOpenAI(value);
+    }
+  }
+  return normalized;
+};
+
+const extractPromptFromContents = (contents: any): string => {
+  if (typeof contents === 'string') return contents;
+  if (Array.isArray(contents)) {
+    return contents
+      .map((item) => {
+        if (typeof item === 'string') return item;
+        if (item?.text) return String(item.text);
+        if (item?.parts && Array.isArray(item.parts)) {
+          return item.parts.map((part: any) => part?.text || '').join('\n');
+        }
+        return '';
+      })
+      .filter(Boolean)
+      .join('\n\n');
+  }
+  if (contents?.parts && Array.isArray(contents.parts)) {
+    return contents.parts.map((part: any) => part?.text || '').join('\n\n');
+  }
+  if (contents?.text) return String(contents.text);
+  return JSON.stringify(contents ?? '');
+};
+
+const isRetryableGeminiError = (error: unknown): boolean => {
+  const msg = error instanceof Error ? error.message.toLowerCase() : String(error).toLowerCase();
+  return (
+    msg.includes('429') ||
+    msg.includes('quota') ||
+    msg.includes('rate limit') ||
+    msg.includes('resource exhausted') ||
+    msg.includes('too many requests') ||
+    msg.includes('overload') ||
+    msg.includes('unavailable')
+  );
+};
+
+const generateContentWithOpenAI = async (contents: any, config: any): Promise<{ text: string }> => {
+  if (!OPENAI_API_KEY) {
+    throw new Error('OpenAI fallback is not configured (missing VITE_OPENAI_API_KEY).');
+  }
+
+  const prompt = extractPromptFromContents(contents);
+  const body: any = {
+    model: OPENAI_MODEL,
+    messages: [{ role: 'user', content: prompt }],
+    temperature: typeof config?.temperature === 'number' ? config.temperature : 0,
+  };
+
+  if (config?.responseSchema) {
+    body.response_format = {
+      type: 'json_schema',
+      json_schema: {
+        name: 'gemini_fallback_schema',
+        strict: true,
+        schema: normalizeSchemaForOpenAI(config.responseSchema),
+      },
+    };
+  }
+
+  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${OPENAI_API_KEY}`,
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`OpenAI fallback failed (${response.status}): ${errorText}`);
+  }
+
+  const data = await response.json();
+  const text = data?.choices?.[0]?.message?.content;
+  if (!text || typeof text !== 'string') {
+    throw new Error('OpenAI fallback returned empty content.');
+  }
+  return { text };
+};
+
 
 async function generateContentWithFallback(model: string, contents: any, config: any): Promise<any> {
   const startTime = Date.now();
@@ -100,6 +208,15 @@ async function generateContentWithFallback(model: string, contents: any, config:
 
   try {
     const result = await apiQueue.add(async () => {
+      if (apiKeys.length === 0) {
+        if (OPENAI_API_KEY) {
+          console.warn('No Gemini API keys found. Using OpenAI fallback directly.');
+          return generateContentWithOpenAI(contents, config);
+        }
+        throw new Error("No GEMINI_API_KEY environment variables set.");
+      }
+
+      let lastError: unknown = null;
       for (let attempt = 0; attempt < apiKeys.length; attempt++) {
         try {
           const aiInstance = getAi();
@@ -110,11 +227,18 @@ async function generateContentWithFallback(model: string, contents: any, config:
           });
           return response;
         } catch (error) {
+          lastError = error;
           console.warn(`API key ${currentKeyIndex + 1} failed:`, error);
           switchToNextKey();
         }
       }
-      throw new Error("All API keys failed. Please check your API keys and quota.");
+
+      if (OPENAI_API_KEY && lastError && isRetryableGeminiError(lastError)) {
+        console.warn('Gemini overloaded/quota hit. Switching to OpenAI fallback.');
+        return generateContentWithOpenAI(contents, config);
+      }
+
+      throw new Error("All Gemini API keys failed and fallback is unavailable.");
     });
 
     console.log('generateContent success:', Date.now() - startTime);
