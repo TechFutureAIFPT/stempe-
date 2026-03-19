@@ -751,11 +751,9 @@ const HomePage: React.FC<HomePageProps> = ({
               <div className="absolute -inset-2 rounded-[26px] bg-gradient-to-br from-blue-600/30 via-purple-500/20 to-cyan-600/30 blur-2xl opacity-50 group-hover/preview:opacity-80 transition-opacity duration-500" />
               <div className="relative rounded-[20px] overflow-hidden border border-white/10 shadow-[0_24px_60px_rgba(0,0,0,0.5)] bg-slate-950">
                 <div className="relative aspect-video overflow-hidden bg-slate-950">
-                  <video
-                    src="/images/video/SPHR Ver3.mp4"
-                    muted
-                    playsInline
-                    preload="metadata"
+                  <img
+                    src="/images/video/cover.png"
+                    alt="Video demo thumbnail"
                     className="w-full h-full object-cover opacity-80 group-hover/preview:opacity-100 scale-[1.02] group-hover/preview:scale-100 transition-all duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-slate-950/20 group-hover/preview:from-slate-950/30 transition-all duration-300" />
@@ -1149,6 +1147,7 @@ const HomePage: React.FC<HomePageProps> = ({
             <div className="bg-black aspect-video">
               <video
                 src="/images/video/SPHR Ver3.mp4"
+                poster="/images/video/cover.png"
                 controls
                 autoPlay
                 className="w-full h-full object-contain"

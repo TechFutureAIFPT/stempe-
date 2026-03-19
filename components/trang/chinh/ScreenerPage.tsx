@@ -11,8 +11,8 @@ import ScreenerHeader from '../../ui/ScreenerHeader';
 
 // Loading component
 const ModuleLoader = () => (
-  <div className="flex justify-center items-center h-32">
-    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+  <div className="flex items-center justify-center h-32">
+    <div className="h-8 w-8 rounded-full border-2 border-slate-700 border-t-cyan-400 animate-spin" />
   </div>
 );
 

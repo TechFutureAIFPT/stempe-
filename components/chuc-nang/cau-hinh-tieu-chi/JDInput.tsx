@@ -302,9 +302,11 @@ const JDInput: React.FC<JDInputProps> = ({ jdText, setJdText, jobPosition, setJo
 
 
                  {(isOcrLoading || isSummarizing) && (
-                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-4 text-purple-400 bg-[#0B1120]/90 backdrop-blur-md px-8 py-6 rounded-2xl border border-purple-500/30 shadow-2xl z-50">
-                         <div className="w-10 h-10 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin"></div>
-                         <span className="text-sm font-bold tracking-wide">{ocrMessage || 'Đang xử lý...'}</span>
+                     <div className="absolute top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-cyan-500/25 bg-[#0B1120]/92 px-8 py-6 shadow-2xl backdrop-blur-md">
+                        <div className="flex flex-col items-center gap-3 text-center">
+                          <div className="h-10 w-10 rounded-full border-4 border-slate-700 border-t-cyan-400 animate-spin" />
+                          <span className="text-sm font-semibold text-slate-200">{ocrMessage || 'Đang xử lý...'}</span>
+                        </div>
                      </div>
                  )}
                  
@@ -365,9 +367,9 @@ const JDInput: React.FC<JDInputProps> = ({ jdText, setJdText, jobPosition, setJo
                      ></textarea>
                      
                      {isSummarizing && (
-                         <div className="absolute top-6 right-6 flex items-center gap-2 text-purple-400 bg-[#0F172A] px-4 py-2 rounded-xl border border-purple-500/30 shadow-2xl">
-                             <i className="fa-solid fa-spinner fa-spin"></i>
-                             <span className="text-xs font-bold tracking-wide">AI OPTIMIZING...</span>
+                         <div className="absolute top-6 right-6 flex items-center gap-2 rounded-xl border border-cyan-500/25 bg-[#0F172A] px-4 py-2 text-slate-200 shadow-2xl">
+                             <div className="h-4 w-4 rounded-full border-2 border-slate-600 border-t-cyan-400 animate-spin" />
+                             <span className="text-xs font-semibold tracking-wide">ĐANG TỐI ƯU JD...</span>
                          </div>
                      )}
                      <div className="absolute top-6 right-6 text-[10px] uppercase tracking-widest font-bold text-slate-600/50 pointer-events-none">

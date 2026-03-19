@@ -416,8 +416,9 @@ const HomePage: React.FC<HomePageProps> = ({
                 setMobileMenuOpen(false);
                 onLoginRequest();
               }}
-              className="w-full h-10 rounded-xl bg-white hover:bg-slate-100 text-slate-950 font-bold text-[13px] transition-colors"
+              className="w-full h-10 rounded-xl bg-gradient-to-r from-cyan-400 to-sky-400 hover:from-cyan-300 hover:to-sky-300 text-slate-950 font-black text-[13px] transition-all flex items-center justify-center gap-2 shadow-[0_8px_24px_rgba(56,189,248,0.35)]"
             >
+              <i className="fa-solid fa-right-to-bracket text-[11px]" />
               Đăng nhập
             </button>
           )}
@@ -759,8 +760,9 @@ const HomePage: React.FC<HomePageProps> = ({
             ) : (
               <button
                 onClick={onLoginRequest}
-                className="hidden lg:flex h-8 px-5 rounded-full bg-white text-slate-950 font-bold text-xs hover:bg-slate-100 transition-all items-center"
+                className="hidden lg:flex h-9 px-5 rounded-full bg-gradient-to-r from-cyan-400 to-sky-400 text-slate-950 font-black text-xs hover:from-cyan-300 hover:to-sky-300 transition-all items-center gap-2 shadow-[0_8px_24px_rgba(56,189,248,0.35)] hover:-translate-y-0.5"
               >
+                <i className="fa-solid fa-right-to-bracket text-[10px]" />
                 Đăng nhập
               </button>
             )}
@@ -798,13 +800,6 @@ const HomePage: React.FC<HomePageProps> = ({
         <div id="hero" className="py-6 sm:py-10 lg:py-12">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-10 items-center">
             <div className="flex flex-col gap-5">
-              <div className="flex items-center gap-2 w-fit">
-                <span className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-bold tracking-wide">
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-                  Công nghệ AI tuyển dụng 2025
-                </span>
-              </div>
-
               <div>
                 <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-[1.1] tracking-tight">
                   Sàng Lọc CV{" "}
@@ -873,11 +868,9 @@ const HomePage: React.FC<HomePageProps> = ({
               <div className="absolute -inset-2 rounded-[26px] bg-gradient-to-br from-blue-600/30 via-purple-500/20 to-cyan-600/30 blur-2xl opacity-50 group-hover/preview:opacity-80 transition-opacity duration-500" />
               <div className="relative rounded-[20px] overflow-hidden border border-white/10 shadow-[0_24px_60px_rgba(0,0,0,0.5)] bg-slate-950">
                 <div className="relative aspect-video overflow-hidden bg-slate-950">
-                  <video
-                    src="/images/video demo/SPHR Ver3.mp4"
-                    muted
-                    playsInline
-                    preload="metadata"
+                  <img
+                    src="/images/video/cover.png"
+                    alt="Video demo thumbnail"
                     className="w-full h-full object-cover opacity-80 group-hover/preview:opacity-100 scale-[1.02] group-hover/preview:scale-100 transition-all duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-slate-950/20 group-hover/preview:from-slate-950/30 transition-all duration-300" />
@@ -888,24 +881,6 @@ const HomePage: React.FC<HomePageProps> = ({
                         <i className="fa-solid fa-play text-slate-900 text-lg ml-0.5" />
                       </div>
                     </div>
-                  </div>
-                  <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-black/60 backdrop-blur-sm border border-white/10 rounded-full px-2.5 py-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-                    <span className="text-white text-[10px] font-bold tracking-wider">
-                      DEMO
-                    </span>
-                  </div>
-                </div>
-                <div className="px-4 py-2.5 flex items-center justify-between bg-slate-900/90 border-t border-white/5">
-                  <div className="flex items-center gap-2">
-                    <i className="fa-solid fa-circle-play text-blue-400 text-xs" />
-                    <span className="text-slate-300 text-xs font-semibold">
-                      SPHR – AI CV Screening
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-1.5 text-slate-500 text-[10px] font-medium group-hover/preview:text-slate-300 transition-colors">
-                    <i className="fa-solid fa-arrow-up-right-from-square" />{" "}
-                    Nhấn để xem
                   </div>
                 </div>
               </div>

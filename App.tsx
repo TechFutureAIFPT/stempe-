@@ -588,7 +588,7 @@ const MainLayout = ({ onResetRequest, className, isLoggedIn, onLoginRequest, cur
           </div>
         )}
         <div className={`w-full overflow-x-hidden ${(activeStep === 'home' || activeStep === 'jd' || activeStep === 'weights' || activeStep === 'upload' || activeStep === 'analysis' || activeStep === 'dashboard' || activeStep === 'chatbot') ? 'flex-1' : 'max-w-7xl px-4 sm:px-6 lg:px-8 mx-auto py-2'} ${(activeStep === 'home' || activeStep === 'jd' || activeStep === 'weights' || activeStep === 'upload' || activeStep === 'analysis' || activeStep === 'dashboard' || activeStep === 'chatbot') ? '' : 'py-2'} flex-1`}>
-          <Suspense fallback={<div className="flex justify-center items-center h-64"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div></div>}>
+          <Suspense fallback={<div className="flex justify-center items-center h-64"><div className="h-12 w-12 rounded-full border-4 border-slate-700 border-t-cyan-400 animate-spin"></div></div>}>
             <Routes>
               <Route path="/" element={<HomePage setActiveStep={setActiveStep} isLoggedIn={isLoggedIn} onLoginRequest={onLoginRequest} completedSteps={completedSteps} />} />
               <Route path="/jd" element={isLoggedIn ? <ScreenerPage {...screenerPageProps} /> : <HomePage setActiveStep={setActiveStep} isLoggedIn={isLoggedIn} onLoginRequest={onLoginRequest} completedSteps={completedSteps} />} />

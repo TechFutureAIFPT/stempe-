@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 
 const TermsPage: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [scrollY, setScrollY] = useState(0);
   const [activeSection, setActiveSection] = useState('definitions');
+  const [isQuickMenuOpen, setIsQuickMenuOpen] = useState(false);
 
   const sections = [
     { id: 'definitions', title: 'Định nghĩa thuật ngữ', number: 1 },
@@ -17,13 +17,6 @@ const TermsPage: React.FC = () => {
 
   useEffect(() => {
     setIsVisible(true);
-    
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const handleSectionChange = (sectionId: string) => {
@@ -429,36 +422,45 @@ const TermsPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0B1220] relative overflow-hidden">
-      {/* Homepage Background Effects */}
-      <div className="ai-aurora"></div>
-      <div className="grid-overlay"></div>
-      
-      {/* Header */}
-      <div className="bg-slate-900/90 border-b border-slate-800/60 sticky top-0 z-10 backdrop-blur-md shadow-xl">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4">
-          <Link 
-            to="/" 
-            className="group inline-flex items-center gap-3 text-slate-400 hover:text-purple-400 transition-all duration-300 hover:gap-4"
-          >
-            <div className="w-8 h-8 rounded-full bg-slate-800/50 group-hover:bg-purple-500/20 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
-              <span className="text-sm">←</span>
-            </div>
-            <span className="font-medium">Quay lại trang chủ</span>
-          </Link>
-        </div>
+    <div className="min-h-screen bg-background text-slate-100 overflow-x-hidden">
+      <div className="fixed left-4 top-4 z-30 flex flex-col gap-2">
+        <button
+          type="button"
+          aria-label="Mở menu điều hướng"
+          onClick={() => setIsQuickMenuOpen((prev) => !prev)}
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-indigo-950/85 text-slate-200 shadow-[0_8px_24px_rgba(0,0,0,0.35)] backdrop-blur-md transition-all hover:border-indigo-400/60 hover:text-indigo-200"
+        >
+          <i className={`fa-solid ${isQuickMenuOpen ? 'fa-xmark' : 'fa-house'} text-sm`} />
+        </button>
+        {isQuickMenuOpen && (
+          <>
+            <Link
+              to="/"
+              aria-label="Về trang chủ"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-indigo-950/90 text-slate-200 shadow-[0_6px_18px_rgba(0,0,0,0.35)] backdrop-blur-md transition-all hover:border-indigo-400/60 hover:text-indigo-200"
+            >
+              <i className="fa-solid fa-house text-xs" />
+            </Link>
+            <Link
+              to="/privacy-policy"
+              aria-label="Chính sách bảo mật"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-indigo-950/90 text-slate-200 shadow-[0_6px_18px_rgba(0,0,0,0.35)] backdrop-blur-md transition-all hover:border-indigo-400/60 hover:text-indigo-200"
+            >
+              <i className="fa-solid fa-shield-halved text-xs" />
+            </Link>
+          </>
+        )}
       </div>
 
       {/* Content */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 relative z-10">
-        {/* Main content container */}
-        <div className={`bg-slate-900/60 backdrop-blur-sm border border-slate-800/60 rounded-3xl p-6 sm:p-8 lg:p-12 shadow-2xl shadow-slate-950/50 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+      <div className="px-4 sm:px-6 lg:px-10 py-8 sm:py-10">
+        <div className={`transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           {/* Title */}
           <div className="text-center mb-8">
-            <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-white via-blue-200 to-purple-200 bg-clip-text text-transparent mb-4 tracking-tight">
+            <h1 className="text-3xl sm:text-4xl font-black text-white mb-4 tracking-tight">
               Điều khoản sử dụng dịch vụ
             </h1>
-            <p className="text-slate-400 text-sm">
+            <p className="text-slate-300 text-sm">
               (Terms of Service)
             </p>
           </div>
@@ -573,24 +575,6 @@ const TermsPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Footer */}
-      <div className="border-t border-slate-800/60 backdrop-blur-sm relative z-10 mt-12">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 text-center">
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <Link 
-              to="/privacy-policy" 
-              className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500/10 to-emerald-500/10 border border-cyan-500/20 text-slate-300 hover:text-white transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/20 hover:-translate-y-1"
-            >
-              <span className="text-cyan-400">🛡</span>
-              <span>Xem Chính sách bảo mật</span>
-              <span className="text-xs opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300">→</span>
-            </Link>
-          </div>
-          <p className="text-slate-500 text-sm mt-6">
-            © 2026 Support HR. Tất cả quyền được bảo lưu.
-          </p>
-        </div>
-      </div>
     </div>
   );
 };
