@@ -17,6 +17,7 @@ import ProgressBar from './components/giao-dien/co-ban/ProgressBar';
 import JDTemplatesModal, { JDTemplate } from './components/giao-dien/lich-su-va-cache/JDTemplatesModal';
 import HistoryModal from './components/giao-dien/lich-su-va-cache/HistoryModal';
 import PageTransition from './components/ui/PageTransition';
+import MobileBottomNav from './components/responsive/mobile/MobileBottomNav';
 
 // Lazy load pages for code-splitting
 const ScreenerPage = lazy(() => import('./components/trang/chinh/ScreenerPage'));
@@ -581,7 +582,17 @@ const MainLayout = ({ onResetRequest, className, isLoggedIn, onLoginRequest, cur
         </header>
       )}
       
-      <main className={`main-content ml-0 ${!isHomeView ? 'mt-14 md:mt-0' : ''} ${!isHomeView ? (sidebarCollapsed ? 'md:ml-20' : 'md:ml-64') : 'md:ml-0'} flex-1 flex flex-col min-h-0 overflow-x-hidden transition-all duration-300 ease-in-out ${!isHomeView ? (sidebarCollapsed ? 'md:w-[calc(100vw-5rem)]' : 'md:w-[calc(100vw-16rem)]') : 'md:w-full'}`}>
+      <main
+        className={`main-content ml-0 ${!isHomeView ? 'pb-20 md:pb-0' : 'pb-0'} ${
+          !isHomeView ? 'mt-14 md:mt-0' : ''
+        } ${!isHomeView ? (sidebarCollapsed ? 'md:ml-20' : 'md:ml-64') : 'md:ml-0'} flex-1 flex flex-col min-h-0 overflow-x-hidden transition-all duration-300 ease-in-out ${
+          !isHomeView
+            ? sidebarCollapsed
+              ? 'md:w-[calc(100vw-5rem)]'
+              : 'md:w-[calc(100vw-16rem)]'
+            : 'md:w-full'
+        }`}
+      >
         {activeStep !== 'home' && activeStep !== 'jd' && activeStep !== 'weights' && activeStep !== 'upload' && activeStep !== 'analysis' && activeStep !== 'dashboard' && (
           <div className="pt-4">
             <ProgressBar activeStep={activeStep} completedSteps={completedSteps} />
@@ -609,6 +620,19 @@ const MainLayout = ({ onResetRequest, className, isLoggedIn, onLoginRequest, cur
         {/* Footer chỉ hiển thị ở trang chủ */}
         {activeStep === 'home' && <Footer />}
       </main>
+
+      {/* Mobile Bottom Navigation (phone-like) */}
+      {activeStep === 'jd' ||
+      activeStep === 'weights' ||
+      activeStep === 'upload' ||
+      activeStep === 'analysis' ? (
+        <MobileBottomNav
+          activeStep={activeStep}
+          completedSteps={completedSteps}
+          onNavigate={setActiveStep}
+          sidebarOpen={sidebarOpen}
+        />
+      ) : null}
       
       {/* JD Templates Modal */}
       <JDTemplatesModal
