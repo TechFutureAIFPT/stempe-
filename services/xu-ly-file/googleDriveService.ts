@@ -21,6 +21,8 @@ export interface DriveFile {
 
 class GoogleDriveService {
   private developerKey: string = ''; 
+  // Fallback defaults to avoid requiring extra env vars.
+  // Note: For Google Picker/Drive access to work, these must match your Google Cloud Console configuration.
   private clientId: string = '1022447215307-67nghlm1hv26vbieho7ho52gqhagpfj7.apps.googleusercontent.com';
   private appId: string = '1022447215307';
   
@@ -28,8 +30,19 @@ class GoogleDriveService {
   private oauthToken: string | null = null;
 
   constructor() {
-    // Prioritize VITE_GOOGLE_PICKER_API_KEY, then VITE_GOOGLE_API_KEY, then Gemini key
-    this.developerKey = (import.meta as any).env?.VITE_GOOGLE_PICKER_API_KEY || (import.meta as any).env?.VITE_GOOGLE_API_KEY || 'AIzaSyCPWn2rJAhB2v6ToC3d4h2rwhWoCSIVBt0';
+    // Picker / Drive config (must match values in Google Cloud Console)
+    this.developerKey =
+      (import.meta as any).env?.VITE_GOOGLE_PICKER_API_KEY ||
+      (import.meta as any).env?.VITE_GOOGLE_API_KEY ||
+      '';
+
+    // Allow overriding via env (avoid hardcoding mismatched values)
+    this.clientId =
+      (import.meta as any).env?.VITE_GOOGLE_PICKER_CLIENT_ID ||
+      this.clientId;
+    this.appId =
+      (import.meta as any).env?.VITE_GOOGLE_PICKER_APP_ID ||
+      this.appId;
   }
 
   /**
@@ -110,21 +123,30 @@ class GoogleDriveService {
   /**
    * Open the Google Picker to select files
    */
-  public openPicker(options: {
-    mimeTypes?: string;
-    multiSelect?: boolean;
-  }): Promise<DriveFile[]> {
+  public openPicker(options: { mimeTypes?: string; multiSelect?: boolean }): Promise<DriveFile[]> {
+    return this.openPickerInternal(options, 0);
+  }
+
+  private async openPickerInternal(
+    options: { mimeTypes?: string; multiSelect?: boolean },
+    retryCount: number,
+  ): Promise<DriveFile[]> {
     return new Promise(async (resolve, reject) => {
       try {
         await this.loadPicker();
-        
+
         if (!this.oauthToken) {
           await this.authenticate();
         }
 
         if (!this.developerKey) {
-          reject(new Error('API Key is missing. Please check .env file.'));
-          return;
+          throw new Error('Picker API key is missing. Please set VITE_GOOGLE_PICKER_API_KEY (or VITE_GOOGLE_API_KEY).');
+        }
+        if (!this.clientId) {
+          throw new Error('Google OAuth client_id is missing. Please set VITE_GOOGLE_PICKER_CLIENT_ID.');
+        }
+        if (!this.appId) {
+          throw new Error('Google Picker appId is missing. Please set VITE_GOOGLE_PICKER_APP_ID.');
         }
 
         const docsView = new window.google.picker.DocsView(window.google.picker.ViewId.DOCS);
@@ -150,7 +172,7 @@ class GoogleDriveService {
                 mimeType: doc.mimeType,
                 size: doc.sizeBytes || 0,
                 url: doc.url,
-                accessToken: this.oauthToken
+                accessToken: this.oauthToken,
               }));
               resolve(files);
             } else if (data.action === window.google.picker.Action.CANCEL) {
@@ -159,18 +181,34 @@ class GoogleDriveService {
           });
 
         if (options.multiSelect) {
-           pickerBuilder.enableFeature(window.google.picker.Feature.MULTISELECT_ENABLED);
+          pickerBuilder.enableFeature(window.google.picker.Feature.MULTISELECT_ENABLED);
         }
 
         const picker = pickerBuilder.build();
         picker.setVisible(true);
       } catch (error) {
         console.error('Picker Error:', error);
-        // If there's an auth error, clear the token so the next attempt prompts again
-        if (error && (error as any).status === 401) {
+
+        const status = (error as any)?.status;
+        const isAuthOrPermissionError = status === 401 || status === 403;
+
+        if (isAuthOrPermissionError && retryCount < 1) {
           this.oauthToken = null;
-          try { localStorage.removeItem('googleDriveToken'); } catch {}
+          try {
+            localStorage.removeItem('googleDriveToken');
+          } catch {}
+
+          try {
+            await this.authenticate();
+            const files = await this.openPickerInternal(options, retryCount + 1);
+            resolve(files);
+            return;
+          } catch (e) {
+            reject(e);
+            return;
+          }
         }
+
         reject(error);
       }
     });

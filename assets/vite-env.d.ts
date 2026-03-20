@@ -16,6 +16,8 @@ interface ImportMetaEnv {
   readonly VITE_GEMINI_API_KEY_4: string
   readonly VITE_OPENAI_API_KEY: string
   readonly VITE_OPENAI_MODEL: string
+  readonly VITE_GOOGLE_PICKER_CLIENT_ID: string
+  readonly VITE_GOOGLE_PICKER_APP_ID: string
   readonly VITE_GEMINI_API_KEY: string
   readonly VITE_APP_NAME: string
   readonly VITE_APP_VERSION: string
