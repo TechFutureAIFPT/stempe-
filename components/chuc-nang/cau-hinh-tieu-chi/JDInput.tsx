@@ -232,8 +232,8 @@ const JDInput: React.FC<JDInputProps> = ({ jdText, setJdText, jobPosition, setJo
   };
 
   return (
-    <section id="module-jd" className="module-pane active w-full h-[calc(100vh)] min-h-[400px] flex flex-col" aria-labelledby="jd-title">
-      <div className="w-full h-full p-2 sm:p-4 flex flex-col">
+    <section id="module-jd" className="module-pane active w-full flex flex-col" aria-labelledby="jd-title">
+      <div className="w-full flex flex-col">
           {!showEditor ? (
              <div className="flex flex-col items-center justify-center flex-1 w-full max-w-4xl mx-auto pt-2">
 
@@ -323,9 +323,9 @@ const JDInput: React.FC<JDInputProps> = ({ jdText, setJdText, jobPosition, setJo
                  )}
                  </div>
           ) : (
-             <div className="flex flex-col flex-1 w-full mx-auto animate-in fade-in zoom-in duration-300 h-full p-6 pt-2">
+             <div className="flex flex-col w-full animate-in fade-in zoom-in duration-300 px-6 pt-0 pb-4">
                 {/* Inline Inputs Area */}
-                <div className="flex items-center gap-3 mb-4 pb-4 border-b border-slate-800/40">
+                <div className="flex items-center gap-3 mb-3 py-3 border-b border-slate-800/40">
                     <div className="flex items-center gap-2 flex-1 w-full mx-auto overflow-x-auto hide-scrollbar">
                          <div className="min-w-[160px] flex-1 flex items-center bg-[#0F172A] border border-slate-800 rounded-lg px-3 py-2 focus-within:border-indigo-500/50 focus-within:ring-1 focus-within:ring-indigo-500/30 transition-all group">
                              <i className="fa-solid fa-briefcase text-slate-500 text-xs group-focus-within:text-purple-400 transition-colors"></i>
@@ -362,9 +362,9 @@ const JDInput: React.FC<JDInputProps> = ({ jdText, setJdText, jobPosition, setJo
                 </div>
 
                 {/* JD Textarea Body */}
-                <div className="flex-1 w-full flex flex-col relative h-full">
+                <div className="w-full flex flex-col relative">
                      <textarea
-                         className="flex-1 w-full bg-[#050B14] border border-slate-800/60 rounded-lg p-6 text-sm text-slate-300 leading-relaxed placeholder-slate-700 resize-none outline-none focus:border-indigo-500/30 transition-colors custom-scrollbar font-mono"
+                         className="w-full h-48 bg-[#050B14] border border-slate-800/60 rounded-lg p-4 text-sm text-slate-300 leading-relaxed placeholder-slate-700 resize-none outline-none focus:border-indigo-500/30 transition-colors custom-scrollbar font-mono"
                          placeholder="Paste the Job Description here...&#10;&#10;Include role title, responsibilities, required skills, experience level, and any other relevant details."
                          value={jdText}
                          onChange={e => setJdText(e.target.value)}
